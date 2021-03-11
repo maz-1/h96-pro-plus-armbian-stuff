@@ -1,0 +1,12 @@
+Get armbian working on my h96 pro plus tv box (green pcb ver)
+
+hardware specs:
+ - cpu: amlogic s912
+ - memory: 3gb ddr3
+ - ethernet: RTL8211F
+ - wifi: Fn-link 8223A-SR (QCA9377)
+ 
+ With meson-gxm-q200.dtb included in armbian you can boot armbian just ok but there is no wifi, so I created meson-gxm-q200-mod.dtb that supports qca9377.
+ Also copy lib-firmware/* to /lib/firmware/ .
+ 
+ There are some problems: no gpu acceleration, no hdmi audio, bluetooth failed to start. But it is enough to be used as a headless server.
