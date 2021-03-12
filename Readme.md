@@ -3,7 +3,7 @@ Get armbian working on my h96 pro plus tv box (green pcb ver)
 ### Hardware Specs:
 
  * soc: amlogic s912
- * memory: 3gb ddr3
+ * memory: 3gb ddr4
  * ethernet: RTL8211F
  * wifi: Fn-link 8223A-SR (QCA9377)
  
