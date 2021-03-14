@@ -11,7 +11,7 @@ Get armbian working on my h96 pro plus tv box (green pcb ver)
 ### Fix Wifi and Bluetooth:
 
 With `meson-gxm-q200.dtb` included in armbian we can boot armbian just ok but there is no wifi/bluetooth, so I created meson-gxm-q200-mod.dtb that supports qca9377.<br/>
-Compilable source code can be found in `amlogic_dts`. The actual modification can be seen in `amlogic_dts/qca9377_diff.patch`.<br/>
+Source code can be found in `amlogic_dts/`, run `build.sh` to build dtb file. The actual modification can be viewed in `amlogic_dts/qca9377_diff.patch`.<br/>
 Also we need some firmware that exists in mainline linux firmware repo but ignored by armbian build system. copy `lib-firmware/*` to `<ARMBIAN_ROOT>/lib/firmware/`.
 
 ### Known Problems:
