@@ -16,7 +16,8 @@ Also we need some firmware that exists in mainline linux firmware repo but ignor
 
 ### Known Problems:
 
-There are still some problems: buggy gpu support, no hdmi audio. But it is enough to be used as a headless server.
+Hardware acceleration can be enabled via `Panfrost`, but the perfomance is far from usable (slow, and crashes randomly). Hardware video decoding is available if firmware in `lib-firmware/meson/vdec` are present, but playback is not satisfying due to poor opengl support.
+Also there is no hdmi audio support.
 
 ### Convert EMMC Root Filesystem From Ext4 to Btrfs
 
