@@ -1,0 +1,115 @@
+What I did: 
+Remove broadcom wifi node from meson-gxm-q200.dts, add qca9377 bluetooth node to meson-gxm-q200.dts
+Replace sound and aiu node in meson-gx-p23x-q20x.dtsi with these found in meson-gxm-khadas-vim2.dts, remove acodec node from meson-gx-p23x-q20x.dtsi
+diff -Naur a/meson-gxm-q200.dts b/meson-gxm-q200.dts
+--- a/meson-gxm-q200.dts	2021-03-15 15:33:43.000000000 +0800
++++ b/meson-gxm-q200.dts	2021-03-15 23:19:00.213219600 +0800
+@@ -73,9 +73,27 @@
+ 	};
+ };
+ 
++/*
+ &sd_emmc_a {
+ 	brcmf: wifi@1 {
+ 		reg = <1>;
+ 		compatible = "brcm,bcm4329-fmac";
+ 	};
+ };
++*/
++
++/* This is connected to the Bluetooth module: */
++&uart_A {
++	status = "okay";
++	pinctrl-0 = <&uart_a_pins>, <&uart_a_cts_rts_pins>;
++	pinctrl-names = "default";
++	uart-has-rtscts;
++
++	bluetooth {
++		compatible = "qcom,qca9377-bt";
++		enable-gpios = <&gpio GPIOX_17 GPIO_ACTIVE_HIGH>;
++		max-speed = <2000000>;
++		clocks = <&wifi32k>;
++		clock-names = "lpo";
++	};
++};
+\ No newline at end of file
+diff -Naur a/meson-gx-p23x-q20x.dtsi b/meson-gx-p23x-q20x.dtsi
+--- a/meson-gx-p23x-q20x.dtsi	2021-03-15 15:33:43.000000000 +0800
++++ b/meson-gx-p23x-q20x.dtsi	2021-03-15 23:48:02.523508700 +0800
+@@ -121,15 +121,7 @@
+ 
+ 	sound {
+ 		compatible = "amlogic,gx-sound-card";
+-		model = "GX-P230-Q200";
+-		audio-aux-devs = <&dio2133>;
+-		audio-widgets = "Line", "Lineout";
+-		audio-routing = "AU2 INL", "ACODEC LOLP",
+-				"AU2 INR", "ACODEC LORP",
+-				"AU2 INL", "ACODEC LOLN",
+-				"AU2 INR", "ACODEC LORN",
+-				"Lineout", "AU2 OUTL",
+-				"Lineout", "AU2 OUTR";
++		model = "KHADAS-VIM2";
+ 		assigned-clocks = <&clkc CLKID_MPLL0>,
+ 				  <&clkc CLKID_MPLL1>,
+ 				  <&clkc CLKID_MPLL2>;
+@@ -144,10 +136,6 @@
+ 		};
+ 
+ 		dai-link-1 {
+-			sound-dai = <&aiu AIU_CPU CPU_SPDIF_FIFO>;
+-		};
+-
+-		dai-link-2 {
+ 			sound-dai = <&aiu AIU_CPU CPU_I2S_ENCODER>;
+ 			dai-format = "i2s";
+ 			mclk-fs = <256>;
+@@ -155,47 +143,20 @@
+ 			codec-0 {
+ 				sound-dai = <&aiu AIU_HDMI CTRL_I2S>;
+ 			};
+-
+-			codec-1 {
+-				sound-dai = <&aiu AIU_ACODEC CTRL_I2S>;
+-			};
+ 		};
+ 
+-		dai-link-3 {
+-			sound-dai = <&aiu AIU_CPU CPU_SPDIF_ENCODER>;
+-
+-			codec-0 {
+-				sound-dai = <&spdif_dit>;
+-			};
+-		};
+-
+-		dai-link-4 {
++		dai-link-2 {
+ 			sound-dai = <&aiu AIU_HDMI CTRL_OUT>;
+ 
+ 			codec-0 {
+ 				sound-dai = <&hdmi_tx>;
+ 			};
+ 		};
+-
+-		dai-link-5 {
+-			sound-dai = <&aiu AIU_ACODEC CTRL_OUT>;
+-
+-			codec-0 {
+-				sound-dai = <&acodec>;
+-			};
+-		};
+ 	};
+ };
+ 
+-&acodec {
+-	AVDD-supply = <&vddio_ao18>;
+-	status = "okay";
+-};
+-
+ &aiu {
+ 	status = "okay";
+-	pinctrl-0 = <&spdif_out_h_pins>;
+-	pinctrl-names = "default";
+ 
+ };
+ 
