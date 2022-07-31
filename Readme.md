@@ -32,3 +32,14 @@ Also we need some firmware that exists in mainline linux firmware repo but ignor
 
 OpenGL can be enabled via `Panfrost`. Hardware video decoding is available if firmware in `lib-firmware/meson/vdec` are present. However there are some tearing while playing videos, not sure if it is a problem with panfrost or x11 settings.
 
+## Use stock IR remote control
+
+We need ir-keytable and a proper keymap file to use stock remote control.
+
+ * Install ir-keytable. `sudo apt install ir-keytable`
+ * Backup `/etc/rc_maps.cfg`: `mv /etc/rc_maps.cfg /etc/rc_maps.cfg.bak`
+ * Copy `ir-remote/rc_maps.cfg` into `/etc/`
+ * Copy `ir-remote/alfawise_h96pp` into `/etc/rc_keymaps/`
+ * Reboot
+ 
+If you don't want to turn off the system from remote control, edit `/etc/systemd/logind.conf` and add `HandlePowerKey=ignore`
